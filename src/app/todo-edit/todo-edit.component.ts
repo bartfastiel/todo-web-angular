@@ -1,38 +1,44 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import Todo from "../../types/Todo";
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
-import {firstValueFrom, lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-todo-edit',
   templateUrl: './todo-edit.component.html',
   styleUrls: ['./todo-edit.component.css']
 })
-export class TodoEditComponent {
+export class TodoEditComponent implements OnInit {
   todo?: Todo;
 
   submitting = false;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
-    void this.init();
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
   }
 
-  async init() {
-    const params = await firstValueFrom(this.route.params);
-
-    if (params.hasOwnProperty('id')) {
-      this.todo = await lastValueFrom(this.http.get<Todo>(`/api/todo/${params['id']}`));
-    }
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      if (!id) {
+        return;
+      }
+      this.http.get<Todo>(`/api/todo/${id}`)
+        .subscribe(todo => this.todo = todo);
+    });
   }
 
-  async submit() {
+  submit() {
     this.submitting = true;
 
-    await lastValueFrom(this.http.put(`/api/todo/${this.todo?.id}/update`, this.todo));
-
-    await this.router.navigate(["/todos"]);
-
-    this.submitting = false;
+    const id = this.todo?.id;
+    if (!id) {
+      return;
+    }
+    this.http.put(`/api/todo/${id}/update`, this.todo)
+      .subscribe(() => this.router.navigate(["/todos"]));
   }
 }

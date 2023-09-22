@@ -1,11 +1,17 @@
 <h1>Todos</h1>
 
-<p *ngIf="todos.length < 1">No Todos found</p>
+<ng-container *ngIf="!todos">
+  Loading...
+</ng-container>
 
-<ul *ngIf="todos.length > 0">
-  <li *ngFor="let todo of todos">
-    <h2>{{todo.description}}</h2>
-    <div>{{todo.status}}</div>
-    <a routerLink="/todos/{{todo.id}}/edit">Edit</a>
-  </li>
-</ul>
+<ng-container *ngIf="todos">
+  <p *ngIf="todos.length < 1">No Todos found</p>
+
+  <ul *ngIf="todos.length > 0">
+    <li *ngFor="let todo of todos">
+      <h2>{{todo.description}}</h2>
+      <div>{{todo.status}}</div>
+      <a routerLink="/{{todo.id}}/edit">Edit</a>
+    </li>
+  </ul>
+</ng-container>

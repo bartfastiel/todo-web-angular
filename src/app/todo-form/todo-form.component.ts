@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
-import Todo from "../../types/Todo";
+import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {lastValueFrom} from "rxjs";
 import {Router} from "@angular/router";
 
 @Component({
@@ -10,25 +8,24 @@ import {Router} from "@angular/router";
   styleUrls: ['./todo-form.component.css']
 })
 export class TodoFormComponent {
-  todo: Todo = {
-    description: '',
-    status: ''
-  };
+  description = '';
+  status = 'OPEN';
 
   submitting = false;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {
   }
 
-  async submit() {
+  submit() {
     this.submitting = true;
 
-    await lastValueFrom(this.http.post('/api/todo', this.todo));
-    this.todo.description = '';
-    this.todo.status = '';
-
-    await this.router.navigate(["/todos"]);
-
-    this.submitting = false;
+    this.http.post('/api/todo', {
+      description: this.description,
+      status: this.status,
+    })
+      .subscribe(() => this.router.navigate(["/todos"]));
   }
 }

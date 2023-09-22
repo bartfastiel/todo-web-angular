@@ -5,10 +5,10 @@ import {TodoFormComponent} from "./todo-form/todo-form.component";
 import {TodoEditComponent} from "./todo-edit/todo-edit.component";
 
 const routes: Routes = [
-  { path: 'todos', component: TodosComponent },
-  { path: 'todos/new', component: TodoFormComponent },
-  { path: 'todos/:id/edit', component: TodoEditComponent },
-  { path: '', redirectTo: '/todos', pathMatch: 'full' }
+  { path: '', component: TodosComponent },
+  { path: 'new', component: TodoFormComponent },
+  { path: ':id/edit', component: TodoEditComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
