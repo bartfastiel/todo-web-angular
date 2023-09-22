@@ -1,0 +1,20 @@
+<form *ngIf="!submitting" (submit)="submit()">
+  <label>
+    Description
+    <input name="description" [(ngModel)]="todo.description"/>
+  </label>
+
+  <label>
+    Status
+    <select name="status" [(ngModel)]="todo.status">
+      <option value="OPEN">Open</option>
+      <option value="IN_PROGRESS">In Progress</option>
+      <option value="DONE">Done</option>
+    </select>
+  </label>
+
+  <button>CREATE</button>
+</form>
+
+<div *ngIf="submitting">Form is being submitted...</div>
+

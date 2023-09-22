@@ -1,0 +1,21 @@
+<div *ngIf="this.todo === undefined">Loading...</div>
+
+<form *ngIf="this.todo && !submitting" (submit)="submit()">
+  <label>
+    Description
+    <input *ngIf="todo?.description" name="description" [(ngModel)]="todo.description"/>
+  </label>
+
+  <label>
+    Status
+    <select *ngIf="todo?.status" name="status" [(ngModel)]="todo.status">
+      <option value="OPEN">Open</option>
+      <option value="IN_PROGRESS">In Progress</option>
+      <option value="DONE">Done</option>
+    </select>
+  </label>
+
+  <button>UPDATE</button>
+</form>
+
+<div *ngIf="submitting">Submitting...</div>
